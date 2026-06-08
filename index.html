@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>フォーム営業システム 取扱説明書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#15233f; --ink2:#3a4a6b; --paper:#fbf7ef; --card:#ffffff;
+  --accent:#ff6b4a; --amber:#ffb020; --ok:#14a05a; --ng:#e0453a;
+  --line:#ece4d6; --navy:#1f3864; --shadow:0 18px 40px -22px rgba(21,35,63,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"M PLUS Rounded 1c",sans-serif;color:var(--ink);
+  background:var(--paper);line-height:1.75;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 1px 1px,rgba(31,56,100,.06) 1px,transparent 0);
+  background-size:22px 22px;
+}
+code,.mono{font-family:"Space Mono",monospace;}
+.tag-url{font-family:"Space Mono",monospace;background:#15233f;color:#ffd9a0;padding:2px 8px;border-radius:6px;font-size:.85em;white-space:nowrap;}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:var(--navy);color:#fff;padding:74px 20px 96px;text-align:center;}
+.hero .blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;animation:float 9s ease-in-out infinite;}
+.b1{width:240px;height:240px;background:var(--accent);top:-60px;left:-40px;}
+.b2{width:300px;height:300px;background:var(--amber);bottom:-120px;right:-60px;animation-delay:-3s;}
+.b3{width:160px;height:160px;background:#5ad1a5;top:40px;right:18%;animation-delay:-6s;}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-26px) scale(1.06)}}
+.hero .inner{position:relative;z-index:2;max-width:760px;margin:0 auto;}
+.kicker{display:inline-block;font-family:"Space Mono",monospace;letter-spacing:.22em;font-size:12px;
+  background:rgba(255,255,255,.14);padding:6px 14px;border-radius:999px;margin-bottom:18px;}
+.hero h1{font-size:clamp(30px,6vw,54px);font-weight:900;line-height:1.2;letter-spacing:-.01em;}
+.hero h1 .hl{color:var(--amber);}
+.hero p{margin-top:14px;font-size:16px;color:#cfe;opacity:.9;}
+.hero .roles{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px;}
+.role-chip{background:#fff;color:var(--navy);font-weight:800;padding:9px 16px;border-radius:12px;font-size:14px;box-shadow:var(--shadow);}
+.wave{position:absolute;bottom:-1px;left:0;width:100%;z-index:1;display:block;}
+
+/* TABS */
+.tabs{position:sticky;top:0;z-index:50;background:rgba(251,247,239,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);display:flex;justify-content:center;gap:4px;padding:8px;flex-wrap:wrap;}
+.tab{border:none;background:transparent;font-family:inherit;font-weight:800;font-size:14px;color:var(--ink2);
+  padding:10px 18px;border-radius:11px;cursor:pointer;transition:.18s;position:relative;}
+.tab:hover{color:var(--navy);background:rgba(31,56,100,.06);}
+.tab.on{color:#fff;background:var(--navy);box-shadow:var(--shadow);}
+.tab .e{margin-right:6px;}
+
+/* LAYOUT */
+.wrap{max-width:880px;margin:0 auto;padding:38px 18px 80px;}
+.panel{display:none;animation:fade .45s ease;}
+.panel.on{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sec-h{font-size:13px;font-family:"Space Mono",monospace;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;}
+h2.big{font-size:clamp(24px,5vw,34px);font-weight:900;letter-spacing:-.01em;margin-bottom:8px;line-height:1.25;}
+.lead{color:var(--ink2);font-size:15px;margin-bottom:26px;max-width:62ch;}
+
+/* STEP CARDS */
+.step{display:flex;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow);
+  opacity:0;transform:translateY(20px);transition:.55s cubic-bezier(.2,.7,.2,1);}
+.step.show{opacity:1;transform:none;}
+.step:hover{transform:translateY(-3px);}
+.step .no{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  font-weight:900;font-size:18px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--amber));}
+.step h3{font-size:17px;font-weight:800;margin-bottom:2px;}
+.step p{font-size:14px;color:var(--ink2);}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:8px 0 26px;}
+.kard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow);transition:.2s;}
+.kard:hover{transform:translateY(-3px);}
+.kard h4{font-size:16px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.kard p{font-size:13.5px;color:var(--ink2);}
+.dot{width:10px;height:10px;border-radius:3px;flex:none;}
+
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);font-size:14px;margin:10px 0 26px;}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);}
+th{background:var(--navy);color:#fff;font-weight:700;}
+tr:last-child td{border-bottom:none;}
+td .mono{color:var(--navy);font-weight:700;}
+
+.callout{display:flex;gap:12px;background:#fff4e9;border:1px solid #ffd9b8;border-left:5px solid var(--amber);
+  border-radius:12px;padding:14px 16px;margin:8px 0 24px;font-size:14px;}
+.callout.warn{background:#fdecea;border-color:#f4b5ae;border-left-color:var(--ng);}
+.callout .ic{font-size:20px;flex:none;}
+
+/* DEMO */
+.demo{background:linear-gradient(160deg,#fff,#fdf3ea);border:2px dashed #f1c9a8;border-radius:22px;padding:22px;margin:10px 0 28px;box-shadow:var(--shadow);}
+.demo .dh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.demo .dh .t{font-weight:900;font-size:18px;}
+.demo .badge{font-family:"Space Mono",monospace;font-size:12px;background:var(--navy);color:#ffd9a0;padding:4px 10px;border-radius:999px;}
+.bar{height:10px;background:#eadfce;border-radius:99px;overflow:hidden;margin-bottom:8px;}
+.bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--amber));border-radius:99px;transition:width .5s cubic-bezier(.2,.7,.2,1);}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0;}
+.metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;}
+.metric .n{font-size:22px;font-weight:900;color:var(--navy);}
+.metric .l{font-size:11px;color:var(--ink2);}
+.metric.rw .n{color:var(--accent);}
+.card-mock{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;text-align:center;position:relative;min-height:150px;display:flex;flex-direction:column;justify-content:center;}
+.card-mock .co{font-size:24px;font-weight:900;margin:4px 0 14px;}
+.flash-ok{animation:fok .5s;} .flash-ng{animation:fng .5s;}
+@keyframes fok{0%{background:#fff}30%{background:#dff5e8}100%{background:#fff}}
+@keyframes fng{0%{background:#fff}30%{background:#fde3e1}100%{background:#fff}}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.dbtn{border:none;font-family:inherit;font-weight:800;font-size:15px;color:#fff;padding:13px 20px;border-radius:12px;cursor:pointer;transition:.12s;flex:1;min-width:120px;}
+.dbtn:active{transform:scale(.95);}
+.dbtn.ok{background:var(--ok);} .dbtn.ng{background:var(--ng);} .dbtn.stop{background:#eef1f8;color:var(--navy);flex:none;}
+.dbtn.link{background:var(--navy);} .dbtn.ghost{background:#eef1f8;color:var(--navy);}
+.reasons{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+.reason{background:#eef1f8;border:1px solid #d3dcef;color:var(--navy);font-weight:700;font-size:13px;padding:8px 12px;border-radius:99px;cursor:pointer;}
+.reason:hover{background:var(--navy);color:#fff;}
+.done-screen{text-align:center;padding:10px;}
+.done-screen .big-emoji{font-size:46px;}
+.hint{font-size:12.5px;color:var(--ink2);margin-top:10px;text-align:center;}
+.op-search{display:flex;gap:8px;}
+.op-search input{flex:1;font-family:inherit;font-size:15px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);min-width:0;}
+.op-search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,107,74,.15);}
+.op-pill{font-size:13px;font-weight:800;padding:6px 12px;border-radius:99px;background:#eef1f8;color:var(--navy);}
+.op-pill.done{background:#dff5e8;color:var(--ok);}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;font-weight:700;font-size:14px;z-index:200;
+  box-shadow:var(--shadow);transition:.3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+footer{text-align:center;padding:30px 18px 50px;color:var(--ink2);font-size:13px;}
+.conf{position:fixed;top:-12px;width:10px;height:14px;z-index:300;pointer-events:none;border-radius:2px;}
+
+@media(max-width:520px){
+  .metrics{grid-template-columns:repeat(2,1fr);}
+  .hero{padding:54px 16px 80px;}
+  .step .no{width:36px;height:36px;font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="inner">
+    <span class="kicker">FORM SALES SYSTEM // MANUAL</span>
+    <h1>フォーム営業システム<br><span class="hl">取扱説明書</span></h1>
+    <p>作業者も管理者も、これを読めば今日から回せる。実際に押して試せるデモ付き 👇</p>
+    <div class="roles">
+      <span class="role-chip">🧑‍💻 作業者</span>
+      <span class="role-chip">🔎 運営者</span>
+      <span class="role-chip">📊 管理者</span>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#fbf7ef" d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z"></path></svg>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab on" data-p="intro"><span class="e">📘</span>概要</button>
+  <button class="tab" data-p="worker"><span class="e">🧑‍💻</span>作業者の使い方</button>
+  <button class="tab" data-p="admin"><span class="e">📊</span>管理者の使い方</button>
+  <button class="tab" data-p="faq"><span class="e">🆘</span>こまったとき</button>
+</nav>
+
+<div class="wrap">
+
+  <!-- ===== 概要 ===== -->
+  <section class="panel on" id="p-intro">
+    <div class="sec-h">Overview</div>
+    <h2 class="big">このシステムは何をする？</h2>
+    <p class="lead">企業リストへ「お問い合わせフォーム営業」を、チームで重複なく・抜けなく回すための仕組みです。リストの取り込みから、作業者への自動振り分け、進捗・報酬の締めまでを1か所で管理します。</p>
+
+    <div class="grid2">
+      <div class="kard"><h4><span class="dot" style="background:var(--ok)"></span>🧑‍💻 作業者</h4><p>表示された1社ずつ、フォームから営業 → <b>配信OK / NG</b> を記録するだけ。次の会社は自動で出てきます。</p></div>
+      <div class="kard"><h4><span class="dot" style="background:var(--amber)"></span>🔎 運営者</h4><p>反応のあった企業を検索し、<b>1次・2次対応</b>を記録します。</p></div>
+      <div class="kard"><h4><span class="dot" style="background:var(--navy)"></span>📊 管理者</h4><p>リスト取り込み・進捗確認・<b>報酬の締め</b>（OK 5円 / NG 1円）・トラブル対応を担当。</p></div>
+    </div>
+
+    <div class="sec-h">Flow</div>
+    <h2 class="big" style="font-size:22px">全体の流れ</h2>
+    <div class="grid2" style="margin-top:14px">
+      <div class="kard"><h4>① 取り込み</h4><p>管理者が担当者ごとのリストを取込元フォルダへ。担当者は自動で付与、重複・NG企業は自動除外。</p></div>
+      <div class="kard"><h4>② 作業</h4><p>作業者が1社ずつフォーム営業し OK/NG を記録。終わると自動で次へ。</p></div>
+      <div class="kard"><h4>③ 締め</h4><p>管理者がダッシュボードで進捗と報酬を確認。作業者ごとの金額が出ます。</p></div>
+    </div>
+
+    <div class="callout"><span class="ic">🔗</span><div>各画面はURL末尾で切り替わります。<span class="tag-url">?page=worker</span> 作業者　<span class="tag-url">?page=operator</span> 運営者　<span class="tag-url">?page=dashboard</span> 管理ダッシュボード</div></div>
+  </section>
+
+  <!-- ===== 作業者 ===== -->
+  <section class="panel" id="p-worker">
+    <div class="sec-h">For Workers</div>
+    <h2 class="big">作業者の使い方</h2>
+    <p class="lead">やることはシンプル。「会社を見て、フォーム営業して、OK か NG を押す」。それだけ。下の練習デモで先に体験してみてください 👇</p>
+
+    <!-- 練習デモ -->
+    <div class="demo" id="demo">
+      <div class="dh"><span class="t">▶ 練習モード（押しても本番に影響しません）</span><span class="badge" id="dProg">0 / 6</span></div>
+      <div class="bar"><i id="dBar"></i></div>
+      <div class="metrics">
+        <div class="metric"><div class="n" id="mDone">0</div><div class="l">完了</div></div>
+        <div class="metric"><div class="n" id="mOk" style="color:var(--ok)">0</div><div class="l">配信OK</div></div>
+        <div class="metric"><div class="n" id="mNg" style="color:var(--ng)">0</div><div class="l">配信NG</div></div>
+        <div class="metric rw"><div class="n" id="mRw">¥0</div><div class="l">報酬</div></div>
+      </div>
+      <div class="card-mock" id="cardMock">
+        <div id="workArea">
+          <div style="font-size:12px;color:var(--ink2)">担当: あなた ／ 次の1件</div>
+          <div class="co" id="coName">―</div>
+          <div class="row" style="margin-bottom:12px">
+            <button class="dbtn link" onclick="demoOpen()">お問合せフォームを開く</button>
+          </div>
+          <div class="row" id="resultRow">
+            <button class="dbtn ok" onclick="demoOk()">配信OK（+5円）</button>
+            <button class="dbtn ng" onclick="demoShowNg()">配信NG（+1円）</button>
+          </div>
+          <div id="ngArea" style="display:none;margin-top:8px">
+            <div style="font-size:13px;color:var(--ink2);margin-bottom:6px">NG理由を選ぶ</div>
+            <div class="reasons" id="reasonBox"></div>
+            <div style="margin-top:8px"><button class="dbtn ghost" style="flex:none" onclick="demoHideNg()">← 戻る</button></div>
+          </div>
+          <div class="row" style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px">
+            <button class="dbtn stop" onclick="demoStop()">⏹ 停止（未に戻す）</button>
+          </div>
+        </div>
+      </div>
+      <div class="hint">※ 本番では「配信OK/NG」を押すと自動で次の会社が出ます。中断するときは「停止」を押すと、その1件は「未」に戻り、他の人が引き継げます。</div>
+    </div>
+
+    <div class="sec-h">Steps</div>
+    <h2 class="big" style="font-size:22px">本番の手順</h2>
+    <div id="workerSteps" style="margin-top:14px">
+      <div class="step reveal"><div class="no">1</div><div><h3>自分の画面を開く</h3><p>配られた <span class="tag-url">?page=worker</span> のURLを開く。スマホでもOK。</p></div></div>
+      <div class="step reveal"><div class="no">2</div><div><h3>名前を選んで「作業開始」</h3><p>担当者プルダウンから<b>自分の名前</b>を選んでスタート。</p></div></div>
+      <div class="step reveal"><div class="no">3</div><div><h3>会社を確認してフォームを開く</h3><p>「企業サイト」「お問合せフォーム」を開く。フォームが無い会社は<b>自動でGoogle検索リンク</b>（公式サイト・所在地・SES・問合せ）が出ます。</p></div></div>
+      <div class="step reveal"><div class="no">4</div><div><h3>送信できたら「配信OK」</h3><p>フォーム送信が完了したら緑の<b>配信OK</b>。時刻は自動で備考へ記録されます。</p></div></div>
+      <div class="step reveal"><div class="no">5</div><div><h3>ダメなら「配信NG」＋理由</h3><p>フォームが無い・お断り等は赤の<b>配信NG</b>→理由を選ぶ（または自由入力）。</p></div></div>
+      <div class="step reveal"><div class="no">6</div><div><h3>自動で次へ。終わりは完了画面🎉</h3><p>記録すると次の1社が自動表示。中断は<b>「停止」</b>で未に戻して終了。全件終わると完了画面が出ます。</p></div></div>
+    </div>
+
+    <div class="callout warn"><span class="ic">⚠️</span><div><b>画面を閉じる前に「停止」を。</b> 作業途中でそのまま閉じると、その会社は「作業中」のまま残ります（30分後に自動で未へ戻りますが、停止を押すのが確実）。</div></div>
+  </section>
+
+  <!-- ===== 管理者 ===== -->
+  <section class="panel" id="p-admin">
+    <div class="sec-h">For Me</div>
+    <h2 class="big">管理者の使い方</h2>
+    <p class="lead">管理者はわし一人。普段やるのは大きく2つだけ ――「<b>1次・2次対応の記録</b>」と「<b>報酬の確認</b>」。あとはたまにしか使わない操作を、下に1表でまとめてあります。</p>
+
+    <div class="sec-h">Response</div>
+    <h2 class="big" style="font-size:22px">① 1次・2次対応を記録する</h2>
+    <p class="lead" style="margin-bottom:14px">運営者UI <span class="tag-url">?page=operator</span> を開く。フォーム営業に反応があった企業を、ここで検索して対応状況を記録します。下のデモで先に体験できます 👇</p>
+
+    <div class="demo" id="opDemo">
+      <div class="dh"><span class="t">▶ 練習モード（運営者）</span><span class="badge" id="opStatus">未検索</span></div>
+      <div class="op-search">
+        <input id="opInput" type="text" placeholder="ここに会社名を貼り付け…">
+        <button class="dbtn link" style="flex:none" onclick="opSearch()">🔎 検索</button>
+      </div>
+      <div class="hint" style="text-align:left;margin:10px 0 0">コピペが面倒なら →
+        <button class="reason" onclick="opSample('株式会社サンプル工業')">サンプルを貼り付け</button>
+      </div>
+      <div class="card-mock" id="opCard" style="display:none;margin-top:14px">
+        <div style="font-size:12px;color:var(--ink2)">検索結果</div>
+        <div class="co" id="opName">―</div>
+        <div class="row" style="gap:8px;margin-bottom:14px">
+          <span class="op-pill" id="opP1">1次: 未</span>
+          <span class="op-pill" id="opP2">2次: 未</span>
+        </div>
+        <div class="row">
+          <button class="dbtn ok" onclick="opRec(1)">1次対応を記録</button>
+          <button class="dbtn link" onclick="opRec(2)">2次対応を記録</button>
+        </div>
+        <div class="row" style="margin-top:10px"><button class="dbtn ghost" style="flex:none" onclick="opClear()">クリア</button></div>
+      </div>
+      <div class="hint">※ 本番では実際の企業リストから検索 → 同じ要領で1次・2次を記録します。<b>何度でも上書きOK</b>。</div>
+    </div>
+
+    <div>
+      <div class="step reveal"><div class="no">1</div><div><h3>企業を検索する</h3><p>企業名（一部でOK）で検索して、対象の会社を選ぶ。</p></div></div>
+      <div class="step reveal"><div class="no">2</div><div><h3>1次対応を記録</h3><p>最初の接触（架電・返信対応など）の結果を入れる。日時は自動で残ります。</p></div></div>
+      <div class="step reveal"><div class="no">3</div><div><h3>反応があれば2次対応を記録</h3><p>商談化・再連絡などの次アクションを入れる。<b>何度でも上書き可</b>。間違えたら同じ会社を検索して入れ直すだけ。</p></div></div>
+    </div>
+
+    <div class="sec-h">Reward</div>
+    <h2 class="big" style="font-size:22px">② 報酬を確認する</h2>
+    <p class="lead" style="margin-bottom:14px">締めのときは <span class="tag-url">?page=report</span> を開くだけ。作業者ごとの OK・NG と金額が出ます（<b>配信OK 5円 / NG 1円</b>）。</p>
+    <div class="grid2">
+      <div class="kard"><h4>💰 報酬ページ</h4><p><span class="tag-url">?page=report</span> ― 担当者別の OK / NG / 報酬と合計。そのまま作業者へ共有できます。</p></div>
+      <div class="kard"><h4>📊 ダッシュボード最下部</h4><p><span class="tag-url">?page=dashboard</span> ― 進捗と一緒に見たいとき。一番下に同じ報酬表が出ます。</p></div>
+    </div>
+
+    <div class="sec-h">Sometimes</div>
+    <h2 class="big" style="font-size:22px">たまに使う操作</h2>
+    <table>
+      <thead><tr><th>やりたいこと</th><th>操作</th></tr></thead>
+      <tbody>
+        <tr><td>新しいリストを追加</td><td><b>「取込元フォルダ」</b>に <code>【名前】</code> 付きファイルを入れる → メニュー <span class="mono">リスト取込（手動）</span></td></tr>
+        <tr><td>作業者を増やす</td><td><b>「作業者」シート</b>のA列に名前を追加</td></tr>
+        <tr><td>放置された作業中を戻す</td><td>ダッシュボードの<b>「再開放」</b> or メニュー <span class="mono">期限切れ作業を再開放</span></td></tr>
+        <tr><td>OK先へ再アプローチ</td><td>メニュー <span class="mono">③ ラウンド2 開始</span></td></tr>
+        <tr><td>直したのに反映されない</td><td><b>新バージョンで再デプロイ</b>（デプロイを管理 → 編集 → 新バージョン → デプロイ）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="panel" id="p-faq">
+    <div class="sec-h">Troubleshooting</div>
+    <h2 class="big">こまったとき</h2>
+    <p class="lead">よくある詰まりどころと直し方。</p>
+
+    <div class="grid2" style="grid-template-columns:1fr">
+      <div class="kard"><h4>🌀 会社が「作業中」のまま残る</h4><p>作業者は画面の<b>「停止」</b>を押す → 未に戻ります。管理者はダッシュボードの<b>「再開放」</b>、またはメニュー「期限切れ作業を再開放」。放置でも30分後に自動で未へ。</p></div>
+      <div class="kard"><h4>💰 報酬集計が出ない</h4><p>トップ画面ではなく<b>「管理ダッシュボード」を開いて一番下までスクロール</b>。または <span class="tag-url">?page=report</span> を直接開く。コード変更後は必ず<b>新バージョンで再デプロイ</b>。</p></div>
+      <div class="kard"><h4>📥 リストが取り込まれない</h4><p>ファイルを<b>「取込元フォルダ」の中</b>に置いたか確認。ファイル名に <code>→</code> が入っていないか、企業名の列があるか、形式がスプレッドシート/Excelか。</p></div>
+      <div class="kard"><h4>🧑‍💻 担当者名がプルダウンに出ない</h4><p>「作業者」シートのA列に名前を追加 → UIをリロード。表記は取り込みファイルの <code>【名前】</code> と揃える。</p></div>
+      <div class="kard"><h4>🔁 直したのに反映されない</h4><p>ほぼ<b>再デプロイ漏れ</b>。「デプロイ → デプロイを管理 → 編集 → バージョン＝<b>新バージョン</b> → デプロイ」。</p></div>
+      <div class="kard"><h4>↩️ 間違えて記録した</h4><p>運営者UI <span class="tag-url">?page=operator</span> で企業名検索 → 状態を確認・修正。1次/2次対応は何度でも上書き可。</p></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>フォーム営業システム 取扱説明書 ・ 単一HTML（GitHub → Vercel でそのまま公開できます）</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---- タブ切替 ---- */
+const tabs=document.querySelectorAll('.tab'), panels=document.querySelectorAll('.panel');
+tabs.forEach(t=>t.onclick=()=>{
+  tabs.forEach(x=>x.classList.remove('on')); panels.forEach(x=>x.classList.remove('on'));
+  t.classList.add('on'); document.getElementById('p-'+t.dataset.p).classList.add('on');
+  window.scrollTo({top:document.querySelector('.tabs').offsetTop-2,behavior:'smooth'});
+  revealNow();
+});
+
+/* ---- スクロール出現 ---- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} }),{threshold:.15});
+function revealNow(){ document.querySelectorAll('.step:not(.show)').forEach((el,i)=>{ el.style.transitionDelay=(i%6*0.06)+'s'; io.observe(el); }); }
+revealNow();
+
+/* ---- トースト ---- */
+let toT; function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toT); toT=setTimeout(()=>t.classList.remove('show'),1800); }
+
+/* ---- 紙吹雪 ---- */
+function confetti(n){
+  const cols=['#ff6b4a','#ffb020','#14a05a','#1f3864','#5ad1a5'];
+  for(let i=0;i<(n||26);i++){
+    const c=document.createElement('div'); c.className='conf';
+    c.style.left=Math.random()*100+'vw'; c.style.background=cols[i%cols.length];
+    c.style.transform='rotate('+Math.random()*360+'deg)';
+    document.body.appendChild(c);
+    const dur=1400+Math.random()*1200, x=(Math.random()-.5)*220;
+    c.animate([{transform:c.style.transform+' translateY(0) translateX(0)',opacity:1},
+      {transform:'translateY(105vh) translateX('+x+'px) rotate(720deg)',opacity:.9}],
+      {duration:dur,easing:'cubic-bezier(.2,.6,.4,1)'});
+    setTimeout(()=>c.remove(),dur);
+  }
+}
+
+/* ---- 練習デモ ---- */
+const companies=['株式会社サンプル工業','テックウェーブ株式会社','みらいソリューションズ','株式会社グリーンフィールド','日本クリエイト合同会社','フォルテック株式会社'];
+const reasons=['フォーム無し','フォームエラー','対象外','営業お断り'];
+const total=companies.length;
+let idx=0, done=0, ok=0, ng=0, reward=0;
+
+function dEl(id){return document.getElementById(id);}
+function paintMetrics(){
+  dEl('mDone').textContent=done; dEl('mOk').textContent=ok; dEl('mNg').textContent=ng;
+  countUp('mRw', reward);
+  dEl('dProg').textContent=done+' / '+total;
+  dEl('dBar').style.width=(done/total*100)+'%';
+}
+let rwShown=0;
+function countUp(id,to){ const el=dEl(id); const from=rwShown; const t0=performance.now();
+  (function step(t){ const k=Math.min((t-t0)/350,1); const v=Math.round(from+(to-from)*k);
+    el.textContent='¥'+v.toLocaleString(); if(k<1) requestAnimationFrame(step); else rwShown=to; })(t0);
+}
+function showCompany(){
+  if(done>=total){ showDone(); return; }
+  dEl('coName').textContent=companies[idx%total];
+  dEl('ngArea').style.display='none'; dEl('resultRow').style.display='';
+}
+function flash(cls){ const c=dEl('cardMock'); c.classList.remove('flash-ok','flash-ng'); void c.offsetWidth; c.classList.add(cls); }
+function demoOpen(){ toast('🔗 フォーム/検索ページを開きます（デモ）'); }
+function demoOk(){ if(done>=total)return; ok++; done++; reward+=5; flash('flash-ok'); confetti(14); paintMetrics(); idx++; setTimeout(showCompany,160); }
+function demoShowNg(){ const box=dEl('reasonBox'); box.innerHTML=''; reasons.forEach(r=>{ const b=document.createElement('button'); b.className='reason'; b.textContent=r; b.onclick=()=>demoNg(r); box.appendChild(b); }); dEl('resultRow').style.display='none'; dEl('ngArea').style.display='block'; }
+function demoHideNg(){ dEl('ngArea').style.display='none'; dEl('resultRow').style.display=''; }
+function demoNg(r){ if(done>=total)return; ng++; done++; reward+=1; flash('flash-ng'); paintMetrics(); toast('NG記録: '+r); idx++; setTimeout(showCompany,160); }
+function demoStop(){ toast('⏹ この1件を「未」に戻しました（デモ）'); }
+function showDone(){
+  confetti(60);
+  dEl('workArea').innerHTML='<div class="done-screen"><div class="big-emoji">🎉</div>'
+    +'<div style="font-size:20px;font-weight:900;margin:6px 0">本巡回 完了！</div>'
+    +'<p style="color:var(--ink2);font-size:14px">完了 '+done+' 件 ／ OK '+ok+' ・ NG '+ng+' ／ 報酬 ¥'+reward.toLocaleString()+'</p>'
+    +'<button class="dbtn ghost" style="flex:none;margin-top:14px" onclick="demoReset()">もう一度ためす</button></div>';
+}
+function demoReset(){ idx=0;done=0;ok=0;ng=0;reward=0;rwShown=0;
+  dEl('workArea').innerHTML=document.getElementById('workAreaTpl').innerHTML;
+  paintMetrics(); showCompany();
+}
+/* ---- 運営者デモ ---- */
+let op1=false, op2=false;
+function opSample(n){ document.getElementById('opInput').value=n; toast('📋 貼り付けました'); }
+function opSearch(){
+  const v=document.getElementById('opInput').value.trim();
+  if(!v){ toast('会社名を入れてください'); return; }
+  document.getElementById('opName').textContent=v;
+  op1=false; op2=false; opPaint();
+  document.getElementById('opCard').style.display='block';
+  document.getElementById('opStatus').textContent='1件ヒット';
+}
+function opPaint(){
+  const p1=document.getElementById('opP1'), p2=document.getElementById('opP2');
+  p1.textContent='1次: '+(op1?'済 ✓':'未'); p1.classList.toggle('done',op1);
+  p2.textContent='2次: '+(op2?'済 ✓':'未'); p2.classList.toggle('done',op2);
+}
+function opRec(n){
+  const t=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+  if(n===1){ op1=true; toast('1次対応を記録しました '+t); } else { op2=true; toast('2次対応を記録しました '+t); }
+  opPaint();
+  const c=document.getElementById('opCard'); c.classList.remove('flash-ok'); void c.offsetWidth; c.classList.add('flash-ok');
+}
+function opClear(){
+  document.getElementById('opInput').value='';
+  document.getElementById('opCard').style.display='none';
+  document.getElementById('opStatus').textContent='未検索';
+  op1=false; op2=false;
+}
+
+/* テンプレ保存（リセット用） */
+const tpl=document.createElement('template'); tpl.id='workAreaTpl'; tpl.innerHTML=dEl('workArea').innerHTML; document.body.appendChild(tpl);
+paintMetrics(); showCompany();
+</script>
+</body>
+</html>
